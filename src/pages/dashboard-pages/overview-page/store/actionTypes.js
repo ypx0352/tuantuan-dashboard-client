@@ -1,0 +1,4 @@
+export const TODOS_SPINNING = "TODOS_SPINNING";
+
+export const SET_TODOS_DATA = "SET_TODOS_DATA";
+

@@ -1,0 +1,7 @@
+export const SHOW_ADD_FORM = "SHOW_ADD_FORM";
+
+export const INITIALIZE_ADDRESS = "INITIALIZE_ADDRESS";
+
+export const TABLE_SPINNING = "TABLE_SPINNING";
+
+export const SHOW_MODAL = "SHOW_MODAL";
