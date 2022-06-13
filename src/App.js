@@ -15,7 +15,7 @@ import NotFoundPage from "./pages/not-found-page/NotFoundPage";
 import LogPage from "./pages/dashboard-pages/log-page/LogPage";
 import TransactionPage from "./pages/dashboard-pages/transaction-page/TransactionPage";
 import UserPage from "./pages/dashboard-pages/user-page/UserPage";
-import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage";
+import ResetPasswordPage from "./pages/reset-password-page/ResetPasswordPage" ;
 
 function App() {
   return (
