@@ -81,7 +81,7 @@ export const getPostSlipAction = (pk_id) => {
       async () => {
         dispatch({ type: actionTypes.PDF_LOADING, value: fromJS(true) });
         const response = await authAxios.get(
-          `http://localhost:1100/api/package/post_slip?pk_id=${pk_id}`,
+          `/api/package/post_slip?pk_id=${pk_id}`,
           { responseType: "arraybuffer" }
         );
         const file = new Blob([response.data], { type: "application/pdf" });

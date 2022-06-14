@@ -38,7 +38,7 @@ const UserPage = (props) => {
 
   useEffect(() => {
     getUserInfo();
-  });
+  },[]);
 
   return (
     <PageContainer>
