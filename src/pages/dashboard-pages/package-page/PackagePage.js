@@ -86,8 +86,6 @@ const PackageTagWrapper = styled.div`
   grid-row-gap: 10px;
   grid-column-gap: 10px;
   box-sizing: border-box;
-
-  overflow: auto;
 `;
 
 const colors = {
