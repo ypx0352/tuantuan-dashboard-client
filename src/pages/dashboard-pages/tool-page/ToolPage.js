@@ -275,6 +275,7 @@ const ToolPage = (props) => {
               >
                 <Table
                   styled={{ width: "100px" }}
+                  rowKey={(record) => record.extraPostageAU} // There is only one row, so the key is not important.
                   tableLayout="auto"
                   columns={costColumns}
                   dataSource={costData}

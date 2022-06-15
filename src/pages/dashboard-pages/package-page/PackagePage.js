@@ -102,20 +102,26 @@ const colors = {
   非奶粉: "#189AB4",
 };
 
-const StyledButton = styled(Button).attrs((props) => ({
-  style: {
-    width: "10%",
-    "min-width": "65px",
-    height: "50px",
-    padding: "12px",
-    "margin-left": "10px",
-    "border-radius": "8px",
-    border: "none",
-    "text-align": "center",
-    "background-color": colors[props.type],
-    color: "white",
-  },
-}))``;
+const StyledButton = styled(Button)`
+  width: 10%;
+  min-width: 65px;
+  height: 50px;
+  padding: 12px;
+  margin-left: 10px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  background-color: ${(props) => colors[props.type]};
+  color: white;
+  :hover {
+    background-color: ${(props) => colors[props.type]};
+    color: white;
+  }
+  :focus {
+    background-color: ${(props) => colors[props.type]};
+    color: white;
+  }
+`;
 
 const StyledSpan = styled.span.attrs((props) => ({
   style: { backgroundColor: colors[`${props.type}`] },
@@ -425,6 +431,7 @@ const PackagePage = (props) => {
   const generatePackageTag = () => {
     return latestPackages.map((item) => (
       <PackageTag
+        key={item.pk_id}
         type={item.type}
         onClick={() => {
           searchPackage(item.pk_id);

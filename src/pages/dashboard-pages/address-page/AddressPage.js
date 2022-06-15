@@ -70,20 +70,26 @@ const colors = {
   update: "#145DA0",
 };
 
-const StyledButton = styled(Button).attrs((props) => ({
-  style: {
-    width: "10%",
-    "min-width": "65px",
-    height: "50px",
-    padding: "12px",
-    "marginLeft": "10px",
-    "borderRadius": "8px",
-    border: "none",
-    "textAlign": "center",
-    "backgroundColor": colors[props.type],
-    color: "white",
-  },
-}))``;
+const StyledButton = styled(Button)`
+  width: 10%;
+  min-width: 65px;
+  height: 50px;
+  padding: 12px;
+  margin-left: 10px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  background-color: ${(props) => colors[props.type]};
+  color: white;
+  :hover {
+    background-color: ${(props) => colors[props.type]};
+    color: white;
+  }
+  :focus {
+    background-color: ${(props) => colors[props.type]};
+    color: white;
+  }
+`;
 
 const TableWrapper = styled.div`
   display: flex;
@@ -204,7 +210,7 @@ const AddressPage = (props) => {
   const generateOption = (provinceCode, cityCode) => {
     if (provinceCode === undefined) {
       return province.map((item) => (
-        <Option value={item.name} provincecode={item.province}>
+        <Option key={item.name} value={item.name} provincecode={item.province}>
           {item.name}
         </Option>
       ));
@@ -254,7 +260,7 @@ const AddressPage = (props) => {
         return area
           .filter((item) => districtPatten.exec(item.code))
           .map((item) => (
-            <Option value={item.name} areacode={item.area}>
+            <Option key={item.name} value={item.name} areacode={item.area}>
               {item.name}
             </Option>
           ));
@@ -300,9 +306,10 @@ const AddressPage = (props) => {
 
     return (
       <Form
+        key="form"
         form={form}
         name="add_new_address"
-        labelWrap={false}
+        // labelWrap={false}
         labelAlign="right"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12, offset: 1 }}
@@ -318,6 +325,7 @@ const AddressPage = (props) => {
         }
       >
         <Form.Item
+          key="name"
           label="Name"
           name="name"
           rules={[{ required: true, message: "Name is required." }]}
@@ -325,6 +333,7 @@ const AddressPage = (props) => {
           <Input onChange={(e) => handleInputChange("name", e.target.value)} />
         </Form.Item>
         <Form.Item
+          key="phone"
           label="Phone"
           name="phone"
           rules={[{ required: true, message: "Phone number is required." }]}
@@ -332,7 +341,12 @@ const AddressPage = (props) => {
           <Input onChange={(e) => handleInputChange("phone", e.target.value)} />
         </Form.Item>
 
-        <Form.Item label="Area" name="area" wrapperCol={{ offset: 1 }}>
+        <Form.Item
+          key="area"
+          label="Area"
+          name="area"
+          wrapperCol={{ offset: 1 }}
+        >
           <h3>
             {addressInput["province"] === undefined
               ? ""
@@ -344,6 +358,7 @@ const AddressPage = (props) => {
           </h3>
           <Input.Group compact>
             <Form.Item
+              key="province"
               name="province"
               noStyle
               rules={[{ required: true, message: "Province is required" }]}
@@ -363,6 +378,7 @@ const AddressPage = (props) => {
               </Select>
             </Form.Item>
             <Form.Item
+              key="city"
               name="city"
               noStyle
               rules={[{ required: true, message: "City is required" }]}
@@ -384,6 +400,7 @@ const AddressPage = (props) => {
               </Select>
             </Form.Item>
             <Form.Item
+              key="district"
               name="district"
               noStyle
               rules={[{ required: true, message: "District is required" }]}
@@ -408,6 +425,7 @@ const AddressPage = (props) => {
           </Input.Group>
         </Form.Item>
         <Form.Item
+          key="address"
           label="Address"
           name="address"
           rules={[{ required: true, message: "Address is required." }]}
@@ -416,11 +434,12 @@ const AddressPage = (props) => {
             onChange={(e) => handleInputChange("address", e.target.value)}
           />
         </Form.Item>
-        <Form.Item label="Note" name="note">
+        <Form.Item key="note" label="Note" name="note">
           <Input onChange={(e) => handleInputChange("note", e.target.value)} />
         </Form.Item>
 
         <Form.Item
+          key="buttons"
           wrapperCol={{ offset: 10 }}
           hidden={record === undefined ? false : true}
         >
@@ -442,6 +461,7 @@ const AddressPage = (props) => {
           </StyledButton>
         </Form.Item>
         <Form.Item
+          key="button"
           wrapperCol={{ offset: 11 }}
           hidden={record === undefined ? true : false}
         >

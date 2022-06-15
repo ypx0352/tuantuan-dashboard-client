@@ -90,6 +90,7 @@ const SettingPage = (props) => {
       const attribute = item[1];
       return (
         <Card
+          key={propertyName}
           style={{
             width: "300px",
             margin: "0 20px",
