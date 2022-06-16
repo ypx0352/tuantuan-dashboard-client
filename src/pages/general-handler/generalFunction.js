@@ -6,24 +6,21 @@ const prettifyMoneyNumber = (value) => {
   return roundedPrettyNumber;
 };
 
-const getTimeInZone = (time,zone)=>{
+const getTimeInZone = (time, zone) => {
   try {
-     const timeInISO = new Date(time).toISOString()
-  if(zone === 'CST'){
-    return(DateTime.fromISO(timeInISO).setZone('Asia/Shanghai').toFormat("yyyy-MM-dd HH:mm:ss"));
-  }else if(zone === 'ACST'){
-    return DateTime.fromISO(timeInISO)
-      .setZone("Australia/Adelaide")
-      .toFormat("dd/MM/yyyy HH:mm:ss");
-
-  }
- 
+    const timeInISO = new Date(time).toISOString();
+    if (zone === "CST") {
+      return DateTime.fromISO(timeInISO)
+        .setZone("Asia/Shanghai")
+        .toFormat("yyyy-MM-dd HH:mm:ss");
+    } else if (zone === "ACST") {
+      return DateTime.fromISO(timeInISO)
+        .setZone("Australia/Adelaide")
+        .toFormat("dd/MM/yyyy HH:mm:ss");
+    }
   } catch (error) {
-    throw error
+    throw error;
   }
- 
+};
 
-}
-
-
-export { prettifyMoneyNumber,getTimeInZone };
+export { prettifyMoneyNumber, getTimeInZone };
