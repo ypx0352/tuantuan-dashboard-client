@@ -130,7 +130,7 @@ const SettingPage = (props) => {
                 }}
               />
             </Popconfirm>,
-            <Tooltip placement="top" title={attribute.updatedAtLocale}>
+            <Tooltip placement="top" title={attribute.updatedAtCST}>
               <FieldTimeOutlined key="update" />
             </Tooltip>,
           ]}

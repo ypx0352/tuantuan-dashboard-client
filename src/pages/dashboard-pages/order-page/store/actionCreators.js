@@ -6,6 +6,7 @@ import {
   normalAxios,
 } from "../../../general-handler/requestHandler";
 import { generalHandle } from "../../../general-handler/errorHandler";
+import { getTimeInZone } from "../../../general-handler/generalFunction";
 
 export const searchAction = (pk_id) => {
   return async (dispatch) => {
@@ -37,7 +38,7 @@ export const searchAction = (pk_id) => {
           });
         }
         const { result } = response.data;
-        result.sendTimeLocale = new Date(result.sendTimeISO).toLocaleString();
+        result.sendTimeACST = getTimeInZone(result.sendTimeISO,'ACST');
         dispatch({
           type: actionTypes.INITIAL_ORDER,
           value: fromJS(result),
@@ -92,7 +93,7 @@ export const reviewTableDataAction = (tableData) => {
       } else {
         tableData.items.forEach((element) => {
           const { item, qty, price, weight, cost } = element;
-          delete element.sendTimeLocale;
+          delete element.sendTimeACST;
           if (qty * price * weight * cost === 0 || item.length === 0) {
             throw new Error("error");
           }
@@ -155,7 +156,7 @@ export const submitAction = (reviewData, packageData, receiverData) => {
     dispatch({ type: actionTypes.SUBMIT_LOADING, value: fromJS(true) });
 
     const submitResult = {};
-    delete packageData.sendTimeLocale;
+    delete packageData.sendTimeACST;
     try {
       const response = await authAxios.post("/api/order/submit", {
         reviewData,

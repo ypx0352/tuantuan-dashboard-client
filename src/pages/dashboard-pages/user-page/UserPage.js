@@ -78,7 +78,7 @@ const UserPage = (props) => {
             </Descriptions.Item>
 
             <Descriptions.Item label="Created at">
-              {userInfo.createdAtLocale}
+              {userInfo.createdAtCST}
             </Descriptions.Item>
           </Descriptions>
         </ContentWrapper>

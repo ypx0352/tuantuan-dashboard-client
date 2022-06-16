@@ -3,16 +3,16 @@ import { fromJS } from "immutable";
 import { actionTypes } from ".";
 import { generalHandle } from "../../../general-handler/errorHandler";
 import { authAxios } from "../../../general-handler/requestHandler";
-import { prettifyMoneyNumber } from "../../../general-handler/generalFunction";
+import { getTimeInZone, prettifyMoneyNumber } from "../../../general-handler/generalFunction";
 
 export const initializeAllTransactionsAction = async (dispatch) => {
   generalHandle(
     async () => {
       const response = await authAxios.get("/api/transaction/all");
-      // Convert ISO time to local time.
+      // Convert ISO time to local CST time.
       // Prettify money display
       response.data.result.forEach((item) => {
-        item.createdAtLocale = new Date(item.createdAt).toLocaleString();
+        item.createdAtCST = getTimeInZone(item.createdAt,'CST');
         item.payAmountToSender = prettifyMoneyNumber(item.payAmountToSender);
         item.items.forEach((row) => {
           row.cost = prettifyMoneyNumber(row.cost);

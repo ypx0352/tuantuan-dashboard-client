@@ -1,6 +1,7 @@
 import { fromJS } from "immutable";
 import { actionTypes } from ".";
 import { generalHandle } from "../../../general-handler/errorHandler";
+import { getTimeInZone } from "../../../general-handler/generalFunction";
 import { authAxios } from "../../../general-handler/requestHandler";
 
 export const getAllLogsAction = async (dispatch) => {
@@ -11,8 +12,8 @@ export const getAllLogsAction = async (dispatch) => {
       const rawResult = response.data.result;
       const result = rawResult.map((item) => {
         const { createdAt, ...rest } = item;
-        const createdAtLocale = new Date(createdAt).toLocaleString();
-        return { createdAtLocale, ...rest };
+        const createdAtCST = getTimeInZone(createdAt,"CST");
+        return { createdAtCST, ...rest };
       });
       dispatch({
         type: actionTypes.ALL_LOGS,

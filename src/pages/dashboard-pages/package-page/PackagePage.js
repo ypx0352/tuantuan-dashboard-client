@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { DateTime } from "luxon";
 import { useSearchParams, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Sidebar from "../static/Sidebar";
@@ -214,20 +215,20 @@ const PackagePage = (props) => {
           key: "pk_id",
         },
         {
-          title: "Send date",
-          dataIndex: "sendTimeLocale",
-          key: "sendTimeLocale",
+          title: "Send time (ACST)",
+          dataIndex: "sendTimeACST",
+          key: "sendTimeACST",
         },
         { title: "Status", dataIndex: "status", key: "status" },
         {
           title: "Domestic courier",
           dataIndex: "domesticCourier",
-          key: "sendTimeLocale",
+          key: "domesticCourier",
         },
         {
           title: "Domestic parcel ID",
           dataIndex: "domesticParcelID",
-          key: "sendTimeLocale",
+          key: "domesticParcelID",
         },
         {
           title: "Type",
@@ -389,7 +390,7 @@ const PackagePage = (props) => {
           title: "Note",
           dataIndex: "note",
           key: "note",
-          render: (text, record, index) => {
+          render: (text, record) => {
             return (
               <TextArea
                 defaultValue={text}
@@ -420,7 +421,7 @@ const PackagePage = (props) => {
         size="small"
       >
         {tableDataState.trackData?.map((item) => (
-          <Step title={item.message} description={item.time} />
+          <Step key={item.message} title={item.message} description={item.time} />
         ))}
       </Steps>
     );
@@ -436,7 +437,7 @@ const PackagePage = (props) => {
           setSearchInput(item.pk_id);
         }}
       >
-        {item.pk_id} {item.receiver} {item.sendLocaleDate}
+        {item.pk_id} {item.receiver} {item.sendDateInADL}
       </PackageTag>
     ));
   };
@@ -509,8 +510,12 @@ const PackagePage = (props) => {
             </PackageTagContainer>
           </Spin>
           <Spin spinning={tableSpinning} tip="Loading...">
-            <TableWrapper className={tablesDisplayed ? "" : "hide"}>
+            <TableWrapper
+              key="package"
+              className={tablesDisplayed ? "" : "hide"}
+            >
               <Table
+                key="packageTable"
                 style={{ width: "100%" }}
                 tableLayout="auto"
                 columns={packageColumns}
@@ -520,8 +525,12 @@ const PackagePage = (props) => {
                 bordered
               />
             </TableWrapper>
-            <TableWrapper className={tablesDisplayed ? "" : "hide"}>
+            <TableWrapper
+              key="receiver"
+              className={tablesDisplayed ? "" : "hide"}
+            >
               <Table
+                key="receiverTable"
                 style={{ width: "100%" }}
                 tableLayout="auto"
                 columns={receiverColumns}
@@ -531,8 +540,9 @@ const PackagePage = (props) => {
                 bordered
               />
             </TableWrapper>
-            <TableWrapper className={tablesDisplayed ? "" : "hide"}>
+            <TableWrapper key="item" className={tablesDisplayed ? "" : "hide"}>
               <Table
+                key="itemTable"
                 style={{ width: "100%" }}
                 tableLayout="auto"
                 columns={itemColumns}

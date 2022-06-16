@@ -190,7 +190,7 @@ const AddressPage = (props) => {
     { title: "City", dataIndex: "city", key: "city" },
     { title: "District", dataIndex: "district", key: "district" },
     { title: "Address", dataIndex: "address", key: "address" },
-    { title: "Created at", dataIndex: "createdAtLocale", key: "createAt" },
+    { title: "Created at", dataIndex: "createdAtCST", key: "createdAtCST" },
     { title: "Note", dataIndex: "note", key: "note" },
     {
       title: "Operation",

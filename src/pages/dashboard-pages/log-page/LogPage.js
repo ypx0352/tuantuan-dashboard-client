@@ -107,7 +107,7 @@ const LogPage = (props) => {
         );
       },
     },
-    { title: "Time", dataIndex: "createdAtLocale", key: "createdAtLocale" },
+    { title: "Time", dataIndex: "createdAtCST", key: "createdAtCST" },
   ];
 
   const handleSearch = (searchWord) => {
@@ -121,7 +121,7 @@ const LogPage = (props) => {
             searchPatten.test(item.action) ||
             searchPatten.test(item.user) ||
             searchPatten.test(item.package) ||
-            searchPatten.test(item.createdAtLocale)
+            searchPatten.test(item.createdAtCST)
         )
       );
     }
@@ -148,7 +148,7 @@ const LogPage = (props) => {
               style={{ width: "100%" }}
               columns={columns}
               dataSource={tableData}
-              rowKey={(record) => record.createdAtLocale}
+              rowKey={(record) => record.createdAtCST}
               bordered
             />
           </Spin>

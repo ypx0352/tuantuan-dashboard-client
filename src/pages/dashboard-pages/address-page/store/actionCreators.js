@@ -2,6 +2,7 @@ import { message } from "antd";
 import { fromJS } from "immutable";
 import { actionTypes } from ".";
 import { generalHandle } from "../../../general-handler/errorHandler";
+import { getTimeInZone } from "../../../general-handler/generalFunction";
 import { authAxios } from "../../../general-handler/requestHandler";
 
 export const initializeAddressAction = async (dispatch) => {
@@ -11,7 +12,7 @@ export const initializeAddressAction = async (dispatch) => {
       const response = await authAxios.get("/api/address/all_address");
       const allAddress = response.data.result.map((item) => {
         const newItem = item;
-        newItem.createdAtLocale = new Date(item.createdAt).toLocaleString();
+        newItem.createdAtCST = getTimeInZone(item.createdAt,'CST');
         newItem.key = item._id;
         return newItem;
       });

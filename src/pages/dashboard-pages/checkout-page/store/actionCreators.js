@@ -4,6 +4,7 @@ import { actionTypes } from ".";
 import { actionCreators } from "../../static/store";
 import { authAxios } from "../../../general-handler/requestHandler";
 import { generalHandle } from "../../../general-handler/errorHandler";
+import { getTimeInZone } from "../../../general-handler/generalFunction";
 
 const getItemsCount = (allItems) => {
   const counts = [];
@@ -27,14 +28,14 @@ export const getAllItemsAction = async (dispatch) => {
       const response = await authAxios.get("/api/checkout/all_items");
       const allItems = response.data.result;
 
-      // Transfer ISO time to local time
+      // Transfer ISO time to specific time zone time
       // Add qty_available entry
       Object.entries(allItems).forEach((entry) => {
         entry[1].forEach((item) => {
           item.qty_available = item.qty - item.qty_in_cart;
-          item.sendTimeLocale = new Date(item.sendTimeISO).toLocaleString();
-          item.localCreatedAt = new Date(item.createdAt).toLocaleString();
-          item.localUpdatedAt = new Date(item.updatedAt).toLocaleString();
+          item.sendTimeACST = getTimeInZone(item.sendTimeISO, "ACST");
+          item.createdAtCST = getTimeInZone(item.createdAt, "CST");
+          item.updatedAtCST = getTimeInZone(item.updatedAt, "CST");
         });
       });
       dispatch({

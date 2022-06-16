@@ -55,7 +55,7 @@ const colors = {
 };
 
 const StyledInput = styled(Input).attrs({
-  placeholder: "Enter transaction ID",
+  placeholder: "Enter transaction ID or time",
 })`
   width: 50%;
   height: 50px;
@@ -120,7 +120,7 @@ const TransactionPage = (props) => {
         tableData.filter((item) => {
           return (
             searchPatten.test(item._id) ||
-            searchPatten.test(item.createdAtLocale)
+            searchPatten.test(item.createdAtCST)
           );
         })
       );
@@ -130,8 +130,8 @@ const TransactionPage = (props) => {
   const mainColumns = [
     {
       title: "Time",
-      dataIndex: "createdAtLocale",
-      key: "createdAtLocale",
+      dataIndex: "createdAtCST",
+      key: "createdAtCST",
     },
     {
       title: "ID",

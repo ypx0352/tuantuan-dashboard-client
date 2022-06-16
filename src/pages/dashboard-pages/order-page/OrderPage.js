@@ -236,7 +236,7 @@ const OrderPage = (props) => {
     {
       key: "packageData",
       pk_id: originalOrder.get("package_id"),
-      sendTimeLocale: originalOrder.get("sendTimeLocale"),
+      sendTimeACST: originalOrder.get("sendTimeACST"),
       type: originalOrder.get("item_type"),
       weight: originalOrder.get("package_weight"),
       count: originalOrder.get("item_count"),
@@ -258,9 +258,9 @@ const OrderPage = (props) => {
           key: "pk_id",
         },
         {
-          title: "Date",
-          dataIndex: "sendTimeLocale",
-          key: "sendTimeLocale",
+          title: "Send time (ACST)",
+          dataIndex: "sendTimeACST",
+          key: "sendTimeACST",
         },
         {
           title: "Type",

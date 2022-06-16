@@ -1,6 +1,7 @@
 import { fromJS } from "immutable";
 import { actionTypes } from ".";
 import { generalHandle } from "../../../general-handler/errorHandler";
+import { getTimeInZone } from "../../../general-handler/generalFunction";
 import { authAxios } from "../../../general-handler/requestHandler";
 
 export const searchPackageAction = (pk_id) => {
@@ -10,9 +11,10 @@ export const searchPackageAction = (pk_id) => {
         dispatch({ type: actionTypes.SET_TABLE_SPINNING, value: fromJS(true) });
         const response = await authAxios.get(`/api/package/?pk_id=${pk_id}`);
         const { itemRecords, packageRecord, trackRecords } = response.data;
-        packageRecord.sendTimeLocale = new Date(
-          packageRecord.sendTimeISO
-        ).toLocaleString();
+        packageRecord.sendTimeACST = getTimeInZone(
+          packageRecord.sendTimeISO,
+          "ACST"
+        );
         const { receiver, phone, address, ...rest } = packageRecord;
         const { domesticCourier, domesticParcelID, status } = trackRecords;
         dispatch({

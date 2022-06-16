@@ -188,10 +188,9 @@ const StyledSpan = styled.span.attrs((props) => ({
 `;
 
 const ExpandedRow = (props) => {
-  const { price, weight, exchangeRate, localCreatedAt, localUpdatedAt } =
+  const { price, weight, exchangeRate, createdAtCST, updatedAtCST } =
     props.record;
-  // const localCreatedAt = new Date(createdAt).toLocaleString();
-  // const localUpdatedAt = new Date(updatedAt).toLocaleString();
+
   return (
     <>
       <ul style={{ display: "inline-block", width: "33%" }}>
@@ -207,10 +206,10 @@ const ExpandedRow = (props) => {
       </ul>
       <ul style={{ display: "inline-block", width: "33%" }}>
         <li>
-          <strong>Created at : </strong> {localCreatedAt}
+          <strong>Created at : </strong> {createdAtCST}
         </li>
         <li>
-          <strong>Updated at : </strong> {localUpdatedAt}
+          <strong>Updated at : </strong> {updatedAtCST}
         </li>
       </ul>
     </>
@@ -507,7 +506,7 @@ const CheckoutPage = (props) => {
                           {record.pk_id}
                         </Link>
                       </div>
-                      <div>{record.sendTimeLocale}</div>
+                      <div>{record.sendTimeACST}</div>
                     </>
                   );
                 },
@@ -659,7 +658,7 @@ const CheckoutPage = (props) => {
                           {record.pk_id}
                         </Link>
                       </div>
-                      <div>{record.sendTimeLocale}</div>
+                      <div>{record.sendTimeACST}</div>
                     </>
                   );
                 },
@@ -791,7 +790,7 @@ const CheckoutPage = (props) => {
             searchPatten.test(item.item) ||
             searchPatten.test(item.receiver) ||
             searchPatten.test(item.pk_id) ||
-            searchPatten.test(item.sendTimeLocale)
+            searchPatten.test(item.sendTimeACST)
           );
         })
       );
