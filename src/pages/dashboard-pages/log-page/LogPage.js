@@ -86,8 +86,8 @@ const LogPage = (props) => {
       dataIndex: "user",
       key: "user",
       filters: [
-        { text: "Pengxiang Yue", value: "Pengxiang Yue" },
-        { text: "Yanan Zhang", value: "Yanan Zhang" },
+        { text: "Pengxiang", value: "Pengxiang" },
+        { text: "Yanan", value: "Yanan" },
       ],
       onFilter: (value, record) => record.user.indexOf(value) === 0,
     },
@@ -107,7 +107,7 @@ const LogPage = (props) => {
         );
       },
     },
-    { title: "Time", dataIndex: "createdAtCST", key: "createdAtCST" },
+    { title: "Time (CST)", dataIndex: "createdAtCST", key: "createdAtCST" },
   ];
 
   const handleSearch = (searchWord) => {

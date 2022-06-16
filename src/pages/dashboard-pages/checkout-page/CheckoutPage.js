@@ -206,10 +206,10 @@ const ExpandedRow = (props) => {
       </ul>
       <ul style={{ display: "inline-block", width: "33%" }}>
         <li>
-          <strong>Created at : </strong> {createdAtCST}
+          <strong>Created at (CST) : </strong> {createdAtCST}
         </li>
         <li>
-          <strong>Updated at : </strong> {updatedAtCST}
+          <strong>Updated at (CST) : </strong> {updatedAtCST}
         </li>
       </ul>
     </>
