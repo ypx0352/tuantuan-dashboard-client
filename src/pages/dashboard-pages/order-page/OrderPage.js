@@ -740,7 +740,6 @@ const OrderPage = (props) => {
                 bordered
               />
             </TableWrapper>
-
             <TableWrapper>
               <Table
                 style={{ width: "100%" }}

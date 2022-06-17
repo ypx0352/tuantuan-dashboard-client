@@ -156,19 +156,17 @@ const TableWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  min-width: 1050px;
   &.hide {
     visibility: hidden;
   }
 `;
 
 const PdfWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  &.hide {
-    visibility: hidden;
+  .react-pdf__Page__canvas {
+    margin: 0 auto;
+    width: 80% !important;
+    height: 100% !important;
   }
 `;
 
@@ -473,7 +471,6 @@ const PackagePage = (props) => {
       </Left>
       <Right className={showSidebar ? "" : "expand"}>
         <Header title="Package" cartCount="hide" />
-
         <ContentWrapper>
           <SearchContainer>
             <StyledInput
@@ -549,7 +546,6 @@ const PackagePage = (props) => {
                 bordered
               />
             </TableWrapper>
-
             <TableWrapper
               key="receiver"
               className={tablesDisplayed ? "" : "hide"}
@@ -592,7 +588,7 @@ const PackagePage = (props) => {
       >
         <PdfWrapper>
           <Document file={pdfFile}>
-            <Page pageNumber={1} />
+            <Page pageNumber={1} scale={2} />
           </Document>
         </PdfWrapper>
       </Modal>
