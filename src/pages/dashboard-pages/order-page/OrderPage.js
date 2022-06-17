@@ -155,7 +155,6 @@ const OrderPage = (props) => {
 
   const userRole = localStorage.getItem("role");
 
-  const searchInputEl = useRef(null);
 
   const [searchInput, setSearchInput] = useState("");
 
@@ -678,17 +677,16 @@ const OrderPage = (props) => {
           <SearchContainer>
             <Input
               placeholder="Please enter the package ID"
-              ref={searchInputEl}
               style={{ width: "50%" }}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onPressEnter={() =>
-                handleSearch(searchInputEl.current.state.value)
+                handleSearch(searchInput)
               }
               allowClear
             />
             <StyledButton
-              onClick={() => handleSearch(searchInputEl.current.state.value)}
+              onClick={() => handleSearch(searchInput)}
               loading={spinning}
             >
               Search
@@ -846,7 +844,7 @@ const OrderPage = (props) => {
         okText="Place a new order"
         cancelText="Close"
         style={{ top: "20px" }}
-        onOk={handleOnOk}
+        onOk={()=>{handleOnOk();setSearchInput("")}}
         onCancel={() => setShowSubmitResultDialog(false)}
       >
         <p>{submitResult.get("msg")}</p>
