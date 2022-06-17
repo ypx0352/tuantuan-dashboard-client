@@ -49,7 +49,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  padding: 10px;
+ // padding: 10px;
 `;
 
 const SearchContainer = styled.div`
@@ -139,7 +139,7 @@ const PackageTag = styled.div.attrs((props) => ({
   color: white;
   border-radius: 8px;
   padding: 0 5px;
-  margin: 10px;
+  //margin: 10px;
   min-width: 105px;
   height: 50px;
   cursor: pointer;

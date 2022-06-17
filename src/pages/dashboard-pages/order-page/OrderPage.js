@@ -19,7 +19,7 @@ const Container = styled.div`
   min-width: 1200px;
   background-color: #f7f8fc;
   font-family: "Mulish", sans-serif;
-  margin: 15px 20px;
+  /* margin: 15px 20px; */
 `;
 
 const Left = styled.div`
@@ -39,7 +39,7 @@ const OrderContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 10px;
+  /* padding: 10px; */
 `;
 
 const SearchContainer = styled.div`

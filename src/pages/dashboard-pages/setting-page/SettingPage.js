@@ -17,7 +17,7 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: #f7f8fc;
   font-family: "Mulish", sans-serif;
-  margin: 15px 20px;
+  /* margin: 15px 20px; */
 `;
 
 const Left = styled.div`

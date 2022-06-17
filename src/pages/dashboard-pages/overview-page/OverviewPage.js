@@ -13,7 +13,7 @@ const Container = styled.div`
   min-width: 1200px;
   background-color: #f7f8fc;
   font-family: "Mulish", sans-serif;
-  margin: 15px 20px;
+  /* margin: 15px 20px; */
 `;
 
 const Left = styled.div`

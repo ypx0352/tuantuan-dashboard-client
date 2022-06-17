@@ -14,11 +14,11 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background-color: #f7f8fc;
   font-family: "Mulish", sans-serif;
-  margin: 15px 20px;
+  /* margin: 15px 20px; */
 `;
 
 const Left = styled.div`
-  width: auto;
+  max-width: 15%;
 `;
 
 const Right = styled.div`
@@ -33,8 +33,8 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
-  padding: 10px;
+  /* width: 100%; */
+  /* padding: 10px; */
 `;
 
 const SearchContainer = styled.div`
