@@ -29,7 +29,7 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: #f7f8fc;
   font-family: "Mulish", sans-serif;
-  margin: 15px 20px;
+  /* margin: 15px 20px; */
 `;
 
 const Left = styled.div`
@@ -156,7 +156,7 @@ const TableWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 1020px;
+  min-width: 1070px;
   &.hide {
     visibility: hidden;
   }
@@ -282,6 +282,7 @@ const PackagePage = (props) => {
             <Button
               loading={pdfLoading}
               type="primary"
+              size="small"
               onClick={() => {
                 getPostSlip(record.pk_id);
               }}
