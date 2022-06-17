@@ -140,7 +140,7 @@ const PackageTag = styled.div.attrs((props) => ({
   border-radius: 8px;
   padding: 0 5px;
   margin: 10px;
-  width: 105px;
+  min-width: 105px;
   height: 50px;
   cursor: pointer;
 `;
@@ -156,7 +156,7 @@ const TableWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 1050px;
+  min-width: 1020px;
   &.hide {
     visibility: hidden;
   }
