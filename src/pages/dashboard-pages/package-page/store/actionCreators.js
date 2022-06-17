@@ -87,9 +87,12 @@ export const getPostSlipAction = (pk_id) => {
           { responseType: "arraybuffer" }
         );
         const file = new Blob([response.data], { type: "application/pdf" });
-        const fileURL = window.URL.createObjectURL(file);
-        window.open(fileURL);
+        // If need to show pdf in new tab, using following code:
+        // const fileURL = window.URL.createObjectURL(file);
+        // window.open(fileURL);
         dispatch({ type: actionTypes.PDF_LOADING, value: fromJS(false) });
+        dispatch({type: actionTypes.SET_PDF_FILE,value:file})
+        dispatch({type:actionTypes.SHOW_MODAL,value:fromJS(true)})
       },
       dispatch,
       () => {

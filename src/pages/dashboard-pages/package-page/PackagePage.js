@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { DateTime } from "luxon";
+import { Document, Page, pdfjs } from "react-pdf";
 import { useSearchParams, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Sidebar from "../static/Sidebar";
@@ -14,9 +14,11 @@ import {
   message,
   Select,
   Badge,
+  Modal,
 } from "antd";
-import { actionCreators } from "./store";
+import { actionCreators, actionTypes } from "./store";
 import { updateNoteAction } from "../static/store/actionCreators";
+import { fromJS } from "immutable";
 const { TextArea } = Input;
 const { Step } = Steps;
 const { Option } = Select;
@@ -159,6 +161,17 @@ const TableWrapper = styled.div`
   }
 `;
 
+const PdfWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  &.hide {
+    visibility: hidden;
+  }
+`;
+
 const StepWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -169,6 +182,8 @@ const StepWrapper = styled.div`
     display: none;
   }
 `;
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PackagePage = (props) => {
   const {
@@ -183,6 +198,9 @@ const PackagePage = (props) => {
     updateNote,
     getPostSlip,
     pdfLoading,
+    pdfFile,
+    showModal,
+    setShowModal,
   } = props;
 
   const [params] = useSearchParams();
@@ -266,7 +284,9 @@ const PackagePage = (props) => {
             <Button
               loading={pdfLoading}
               type="primary"
-              onClick={() => getPostSlip(record.pk_id)}
+              onClick={() => {
+                getPostSlip(record.pk_id);
+              }}
             >
               View
             </Button>
@@ -421,7 +441,11 @@ const PackagePage = (props) => {
         size="small"
       >
         {tableDataState.trackData?.map((item) => (
-          <Step key={item.message} title={item.message} description={item.time} />
+          <Step
+            key={item.message}
+            title={item.message}
+            description={item.time}
+          />
         ))}
       </Steps>
     );
@@ -525,6 +549,7 @@ const PackagePage = (props) => {
                 bordered
               />
             </TableWrapper>
+
             <TableWrapper
               key="receiver"
               className={tablesDisplayed ? "" : "hide"}
@@ -558,6 +583,19 @@ const PackagePage = (props) => {
           </Spin>
         </ContentWrapper>
       </Right>
+
+      <Modal
+        title="Post slip"
+        visible={showModal}
+        footer={null}
+        onCancel={() => setShowModal(false)}
+      >
+        <PdfWrapper>
+          <Document file={pdfFile}>
+            <Page pageNumber={1} />
+          </Document>
+        </PdfWrapper>
+      </Modal>
     </Container>
   );
 };
@@ -570,6 +608,8 @@ const mapState = (state) => ({
   latestPackages: state.getIn(["package", "latestPackages"]).toJS(),
   showSidebar: state.getIn(["static", "showSidebar"]),
   pdfLoading: state.getIn(["package", "pdfLoading"]),
+  pdfFile: state.getIn(["package", "pdfFile"]),
+  showModal: state.getIn(["package", "showModal"]),
 });
 
 const mapDispatch = (dispatch) => ({
@@ -587,6 +627,9 @@ const mapDispatch = (dispatch) => ({
   },
   getPostSlip(pk_id) {
     dispatch(actionCreators.getPostSlipAction(pk_id));
+  },
+  setShowModal(value) {
+    dispatch({ type: actionTypes.SHOW_MODAL, value: fromJS(value) });
   },
 });
 

@@ -13,6 +13,8 @@ const defaultState = fromJS({
   latestPackagesSpinning: false,
   latestPackages: [],
   pdfLoading: false,
+  pdfFile: null,
+  showModal: false,
 });
 
 const returnNewStateToStore = (state = defaultState, action) => {
@@ -34,6 +36,13 @@ const returnNewStateToStore = (state = defaultState, action) => {
 
     case actionTypes.PDF_LOADING:
       return state.set("pdfLoading", action.value);
+
+    case actionTypes.SET_PDF_FILE:
+      return state.set("pdfFile", action.value);
+
+    case actionTypes.SHOW_MODAL:
+      return state.set("showModal", action.value);
+
     default:
       return state;
   }
