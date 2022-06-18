@@ -129,12 +129,19 @@ const TransactionPage = (props) => {
 
   const mainColumns = [
     {
-      title: "Time",
+      title: "Paid at (CST)",
+      width: 180,
       dataIndex: "createdAtCST",
       key: "createdAtCST",
     },
     {
-      title: "ID",
+      title: "Confirmed at (CST)",
+      width: 180,
+      dataIndex: "approvedAtCST",
+      key: "approvedAtCST",
+    },
+    {
+      title: "Transaction ID",
       dataIndex: "_id",
       key: "_id",
     },
