@@ -574,7 +574,7 @@ const PackagePage = (props) => {
               />
             </TableWrapper>
             <StepWrapper className={tablesDisplayed ? "" : "hide"}>
-              <h3>Parcel Track</h3>
+              <h3>Parcel Track (Local time)</h3>
               {generateStep()}
             </StepWrapper>
           </Spin>
