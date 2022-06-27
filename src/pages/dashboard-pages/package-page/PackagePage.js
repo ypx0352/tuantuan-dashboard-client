@@ -49,7 +49,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
- // padding: 10px;
+  // padding: 10px;
 `;
 
 const SearchContainer = styled.div`
@@ -335,18 +335,12 @@ const PackagePage = (props) => {
           dataIndex: "qty",
           key: "qty",
           width: "10%",
-          render: (text) => {
-            return <Input type="number" bordered={false} value={text} />;
-          },
         },
         {
           title: "Qty in cart",
           dataIndex: "qty_in_cart",
           key: "qty_in_cart",
           width: "10%",
-          render: (text) => {
-            return <Input type="number" bordered={false} value={text} />;
-          },
         },
         {
           title: "Price / each",
