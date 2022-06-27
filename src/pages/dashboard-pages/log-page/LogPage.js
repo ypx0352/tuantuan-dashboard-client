@@ -87,7 +87,7 @@ const LogPage = (props) => {
       key: "user",
       filters: [
         { text: "Pengxiang", value: "Pengxiang" },
-        { text: "Yanan", value: "Yanan" },
+        { text: "yanangarbo", value: "yanangarbo" },
       ],
       onFilter: (value, record) => record.user.indexOf(value) === 0,
     },
