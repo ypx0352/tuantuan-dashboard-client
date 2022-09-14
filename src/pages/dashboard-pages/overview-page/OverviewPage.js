@@ -8,7 +8,6 @@ import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
-
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -90,10 +89,14 @@ const DiagramContainer = styled.div`
   flex-direction: column;
 `;
 
-const Diagram = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin: 5px 0;
+const Diagram = styled.div``;
+
+const Chart = styled.div`
+  margin: 10px auto;
+  border-radius: 15px;
+  border: 1px solid #dfe0eb;
+  max-width: 1100px;
+  overflow: hidden;
 `;
 
 const antIcon = (
@@ -107,27 +110,22 @@ const sdk = new ChartsEmbedSDK({
 const qtyofParcelsChart = sdk.createChart({
   chartId: "63209283-2840-42da-888d-8634b99c128f",
   height: "380px",
-  width: "500px"
 });
 
 const qtyofItemsChart = sdk.createChart({
   chartId: "6320a0fb-180c-47eb-8dd4-fec7a93566d9",
   height: "380px",
-  width: "500px",
 });
 
 const qtyofItemsandParcelsChart = sdk.createChart({
   chartId: "63209fe2-215c-4e5e-86c1-6d5418a02319",
   height: "380px",
-  width: "500px",
 });
 
 const productSoldRankingChart = sdk.createChart({
   chartId: "632154a4-57a9-451e-82e7-8db094a90bdd",
   height: "380px",
-  width: "500px",
 });
-
 
 const OverviewPage = (props) => {
   const { showSidebar, initializeTodos, todosData, todosSpinning } = props;
@@ -138,12 +136,16 @@ const OverviewPage = (props) => {
     }
   }, []);
 
-  useEffect(() =>{
+  useEffect(() => {
     qtyofParcelsChart.render(document.getElementById("qtyofParcelsChar"));
     qtyofItemsChart.render(document.getElementById("qtyofItemsChart"));
-    qtyofItemsandParcelsChart.render(document.getElementById("qtyofItemsandParcelsChart"));
-    productSoldRankingChart.render(document.getElementById("productSoldRankingChart"));
-  },[]);
+    qtyofItemsandParcelsChart.render(
+      document.getElementById("qtyofItemsandParcelsChart")
+    );
+    productSoldRankingChart.render(
+      document.getElementById("productSoldRankingChart")
+    );
+  }, []);
 
   return (
     <Container>
@@ -192,14 +194,20 @@ const OverviewPage = (props) => {
           </BlockWrapper>
         </TodoContainer>
         <DiagramContainer>
-          <h2>Statistic</h2>
+          <h2>Statistics</h2>
           <Diagram>
-            <span id="qtyofParcelsChar"></span>
-            <span id="qtyofItemsChart"></span>
-          </Diagram>
-          <Diagram>
-            <span id="qtyofItemsandParcelsChart"></span>
-            <span id="productSoldRankingChart"></span>
+            <Chart>
+              <div id="productSoldRankingChart"></div>
+            </Chart>
+            <Chart>
+              <div id="qtyofItemsandParcelsChart"></div>
+            </Chart>
+            <Chart>
+              <div id="qtyofParcelsChar"></div>
+            </Chart>
+            <Chart>
+              <div id="qtyofItemsChart"></div>
+            </Chart>
           </Diagram>
         </DiagramContainer>
       </Right>
