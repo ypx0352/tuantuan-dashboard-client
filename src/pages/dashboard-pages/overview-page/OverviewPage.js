@@ -6,6 +6,8 @@ import Header from "../static/Header";
 import { actionCreators } from "./store";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
+
 
 const Container = styled.div`
   display: flex;
@@ -88,11 +90,44 @@ const DiagramContainer = styled.div`
   flex-direction: column;
 `;
 
-const Diagram = styled.div``;
+const Diagram = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 5px 0;
+`;
 
 const antIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#3751ff" }} spin />
 );
+
+const sdk = new ChartsEmbedSDK({
+  baseUrl: "https://charts.mongodb.com/charts-project-0-ohscc",
+});
+
+const qtyofParcelsChart = sdk.createChart({
+  chartId: "63209283-2840-42da-888d-8634b99c128f",
+  height: "380px",
+  width: "500px"
+});
+
+const qtyofItemsChart = sdk.createChart({
+  chartId: "6320a0fb-180c-47eb-8dd4-fec7a93566d9",
+  height: "380px",
+  width: "500px",
+});
+
+const qtyofItemsandParcelsChart = sdk.createChart({
+  chartId: "63209fe2-215c-4e5e-86c1-6d5418a02319",
+  height: "380px",
+  width: "500px",
+});
+
+const productSoldRankingChart = sdk.createChart({
+  chartId: "632154a4-57a9-451e-82e7-8db094a90bdd",
+  height: "380px",
+  width: "500px",
+});
+
 
 const OverviewPage = (props) => {
   const { showSidebar, initializeTodos, todosData, todosSpinning } = props;
@@ -102,6 +137,14 @@ const OverviewPage = (props) => {
       initializeTodos();
     }
   }, []);
+
+  useEffect(() =>{
+    qtyofParcelsChart.render(document.getElementById("qtyofParcelsChar"));
+    qtyofItemsChart.render(document.getElementById("qtyofItemsChart"));
+    qtyofItemsandParcelsChart.render(document.getElementById("qtyofItemsandParcelsChart"));
+    productSoldRankingChart.render(document.getElementById("productSoldRankingChart"));
+  },[]);
+
   return (
     <Container>
       <Left>
@@ -149,8 +192,15 @@ const OverviewPage = (props) => {
           </BlockWrapper>
         </TodoContainer>
         <DiagramContainer>
-          <h2>Diagram</h2>
-          <Diagram>Diagram is comming soon...</Diagram>
+          <h2>Statistic</h2>
+          <Diagram>
+            <span id="qtyofParcelsChar"></span>
+            <span id="qtyofItemsChart"></span>
+          </Diagram>
+          <Diagram>
+            <span id="qtyofItemsandParcelsChart"></span>
+            <span id="productSoldRankingChart"></span>
+          </Diagram>
         </DiagramContainer>
       </Right>
     </Container>

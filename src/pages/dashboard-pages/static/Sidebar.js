@@ -95,7 +95,7 @@ const Sidebar = (props) => {
           className={selected === "transaction" ? "selected" : ""}
         >
           <ListItemIcon className="material-icons-outlined">
-            shopping_cart_checkout
+            paid
           </ListItemIcon>
           <ListItemText>Transaction</ListItemText>
         </ListItemWrapper>
