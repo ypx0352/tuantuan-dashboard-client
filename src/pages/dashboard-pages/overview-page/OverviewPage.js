@@ -127,6 +127,11 @@ const productSoldRankingChart = sdk.createChart({
   height: "380px",
 });
 
+const profitsRankingChart = sdk.createChart({
+  chartId: "6321ccad-a053-49e6-8187-3779d0dc23d8",
+  height: "600px",
+});
+
 const OverviewPage = (props) => {
   const { showSidebar, initializeTodos, todosData, todosSpinning } = props;
 
@@ -145,6 +150,7 @@ const OverviewPage = (props) => {
     productSoldRankingChart.render(
       document.getElementById("productSoldRankingChart")
     );
+    profitsRankingChart.render(document.getElementById("profitsRankingChart"));
   }, []);
 
   return (
@@ -198,6 +204,9 @@ const OverviewPage = (props) => {
           <Diagram>
             <Chart>
               <div id="productSoldRankingChart"></div>
+            </Chart>
+            <Chart>
+              <div id="profitsRankingChart"></div>
             </Chart>
             <Chart>
               <div id="qtyofItemsandParcelsChart"></div>
