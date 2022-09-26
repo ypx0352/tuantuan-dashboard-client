@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Sidebar from "../static/Sidebar";
 import Header from "../static/Header";
 import { actionCreators } from "./store";
-import { Spin } from "antd";
+import { Skeleton, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
@@ -13,8 +13,7 @@ const Container = styled.div`
   min-height: 100vh;
   min-width: 1200px;
   background-color: #f7f8fc;
-  font-family: "Mulish", sans-serif;
-  /* margin: 15px 20px; */
+  font-family: "Mulish", sans-serif;  
 `;
 
 const Left = styled.div`
@@ -89,7 +88,16 @@ const DiagramContainer = styled.div`
   flex-direction: column;
 `;
 
-const Diagram = styled.div``;
+const SkeletonWrapper = styled.div`
+  &.hide{
+    display: none;
+  }
+`
+const Diagram = styled.div`
+  &.hide {
+    display: none;
+  }
+`;
 
 const Chart = styled.div`
   margin: 10px auto;
@@ -201,7 +209,10 @@ const OverviewPage = (props) => {
         </TodoContainer>
         <DiagramContainer>
           <h2>Statistics</h2>
-          <Diagram>
+          <SkeletonWrapper className={todosSpinning?"":"hide"}>
+            <Skeleton active paragraph={{rows:6}}></Skeleton>
+          </SkeletonWrapper>
+          <Diagram className={todosSpinning ? "hide" : ""}>
             <Chart>
               <div id="productSoldRankingChart"></div>
             </Chart>
