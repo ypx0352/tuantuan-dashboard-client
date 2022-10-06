@@ -361,7 +361,7 @@ const PackagePage = (props) => {
           render: (text) => <StyledSpan type={text}>{text}</StyledSpan>,
         },
         {
-          title: "Cost / each",
+          title: "Cost / each (Total cost for paid item)",
           dataIndex: "cost",
           key: "cost",
           render: (text) => "￥ " + text,
