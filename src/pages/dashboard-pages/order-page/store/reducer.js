@@ -28,7 +28,11 @@ const defaultState = fromJS({
   normalPostage: null,
   babyFormulaPostage: null,
   exchangeRateInSetting: null,
+  adultFormula3Postage: null,
+  adultFormula6Postage: null,
+  otherItemPostage:null,
   showExistMessage: false,
+  receivers: null,
 });
 
 const returnNewStateToStore = (state = defaultState, action) => {
@@ -50,7 +54,7 @@ const returnNewStateToStore = (state = defaultState, action) => {
 
     case actionTypes.SHOW_REVIEW:
       return state.set("showReview", action.value);
-    
+
     case actionTypes.REVIEW_DATA:
       return state.set("reviewData", action.value);
 
@@ -72,11 +76,27 @@ const returnNewStateToStore = (state = defaultState, action) => {
       return state.merge({
         normalPostage: action.value.get("normalPostage"),
         babyFormulaPostage: action.value.get("babyFormulaPostage"),
+        adultFormula3Postage: action.value.get("adultFormula3Postage"),
+        adultFormula6Postage: action.value.get("adultFormula6Postage"),
+        otherItemPostage:action.value.get("otherItemPostage"),
         exchangeRateInSetting: action.value.get("exchangeRateInSetting"),
       });
 
     case actionTypes.SHOW_EXIST_MESSAGE:
       return state.set("showExistMessage", action.value);
+
+    case actionTypes.MODIFY_ORIGINAL_ORDER:
+      return state.set("originalOrder", action.value);
+
+    case actionTypes.GET_RECEIVERS:
+      return state.set("receivers", action.value);
+
+    case actionTypes.SET_RECEIVER_BY_SELECTION:
+      const newOriginalOrder = state.get("originalOrder").toJS();
+      newOriginalOrder.receiver_name = action.value.get("name");
+      newOriginalOrder.receiver_phone = action.value.get("phone");
+      newOriginalOrder.receiver_address = action.value.get("address");
+      return state.set("originalOrder", fromJS(newOriginalOrder));
 
     default:
       return state;

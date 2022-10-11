@@ -28,8 +28,7 @@ const Container = styled.div`
   min-width: 1200px;
   min-height: 100vh;
   background-color: #f7f8fc;
-  font-family: "Mulish", sans-serif;
-  /* margin: 15px 20px; */
+  font-family: "Mulish", sans-serif;  
 `;
 
 const Left = styled.div`
@@ -79,6 +78,7 @@ const PackageTagContainer = styled.div`
 
 const PackageTagHeaderWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
@@ -101,6 +101,9 @@ const colors = {
   completed: "#059DC0",
   奶粉: "#E8B4B8",
   非奶粉: "#189AB4",
+  蓝胖子3: "#154c79",
+  蓝胖子6: "#154c79",
+  其他: "#eab676",
 };
 
 const StyledButton = styled(Button)`
@@ -146,8 +149,10 @@ const PackageTag = styled.div.attrs((props) => ({
 `;
 
 const LegendWrapper = styled.div`
-  display: flex;
+  display: flex;  
   justify-content: center;
+  margin-top:20px;
+  margin-bottom:20px;
 `;
 
 const TableWrapper = styled.div`
@@ -280,6 +285,12 @@ const PackagePage = (props) => {
           key: "postSlip",
           render: (text, record) => (
             <Button
+              disabled={
+                tableDataState.packageData[0].type == "蓝胖子3" ||
+                tableDataState.packageData[0].type == "蓝胖子6"
+                  ? true
+                  : false
+              }
               loading={pdfLoading}
               type="primary"
               size="small"
@@ -486,8 +497,8 @@ const PackagePage = (props) => {
           <Spin spinning={latestPackagesSpinning} tip="Loading...">
             <PackageTagContainer>
               <PackageTagHeaderWrapper>
-                <h3>
-                  Recently added {"  "}
+                <>
+                  <h3>Recently added packages</h3>
                   <Select
                     defaultValue={10}
                     onChange={(e) => getLatestPackages(e)}
@@ -501,25 +512,38 @@ const PackagePage = (props) => {
                     <Option key="30" value="30">
                       30
                     </Option>
-                  </Select>{" "}
-                  packages:
-                  <LegendWrapper>
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ color: "#E8B4B8" }}
-                    >
-                      blur_on
-                    </span>
-                    <span>Formulas</span>
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ color: "#189AB4" }}
-                    >
-                      blur_on
-                    </span>
-                    <span>Regular</span>
-                  </LegendWrapper>
-                </h3>
+                  </Select>{" "}                  
+                </>
+                <LegendWrapper>
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ color: "#E8B4B8" }}
+                  >
+                    blur_on
+                  </span>
+                  <span>Baby Formulas</span>
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ color: "#189AB4" }}
+                  >
+                    blur_on
+                  </span>
+                  <span>Regular</span>
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ color: "#154c79" }}
+                  >
+                    blur_on
+                  </span>
+                  <span>Adult formulas</span>
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ color: "#eab676" }}
+                  >
+                    blur_on
+                  </span>
+                  <span>Other</span>
+                </LegendWrapper>
               </PackageTagHeaderWrapper>
 
               <PackageTagWrapper>{generatePackageTag()}</PackageTagWrapper>

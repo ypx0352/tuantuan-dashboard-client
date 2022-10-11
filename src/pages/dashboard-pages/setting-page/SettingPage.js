@@ -9,6 +9,9 @@ import { actionCreators } from "./store";
 import currencyImg from "../../../image/exchange.png";
 import babyFormulaImg from "../../../image/babyFormula.avif";
 import normalItemImg from "../../../image/normalItem.png";
+import lanpangzi3Img from "../../../image/lanpangzi3.jpg";
+import lanpangzi6Img from "../../../image/lanpangzi6.jpg";
+import otherItemImg from "../../../image/otherItem.jpg";
 const { Meta } = Card;
 
 const Container = styled.div`
@@ -34,7 +37,7 @@ const Right = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const SettingPage = (props) => {
@@ -76,11 +79,21 @@ const SettingPage = (props) => {
     setShowPopConfirm((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const imgs = [normalItemImg, babyFormulaImg, currencyImg];
+  const imgs = [
+    normalItemImg,
+    babyFormulaImg,
+    currencyImg,
+    lanpangzi3Img,
+    lanpangzi6Img,
+    otherItemImg,
+  ];
   const descriptions = [
     "Normal item postage per Kg",
     "Baby formula postage per 3 cans",
     "Exchange rate AUD/RMB",
+    "Adult formula postage per 3 cans",
+    "Adult formula postage per 6 cans",
+    "Other item postage per Kg"
   ];
 
   const generateCard = (settings) => {
@@ -93,7 +106,7 @@ const SettingPage = (props) => {
           key={propertyName}
           style={{
             width: "300px",
-            margin: "0 20px",
+            margin: "20px",
           }}
           cover={
             <img
