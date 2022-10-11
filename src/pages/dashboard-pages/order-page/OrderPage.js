@@ -2,7 +2,18 @@ import React, { useRef, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Table, Input, Spin, message, BackTop, Button, Modal } from "antd";
+import {
+  Table,
+  Input,
+  Spin,
+  message,
+  BackTop,
+  Button,
+  Modal,
+  DatePicker,
+  Select,
+} from "antd";
+
 import "antd/dist/antd.css";
 import { LoadingOutlined } from "@ant-design/icons";
 import Sidebar from "../static/Sidebar";
@@ -11,6 +22,7 @@ import { actionCreators, actionTypes } from "./store";
 import { fromJS } from "immutable";
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const Container = styled.div`
   position: relative;
@@ -147,16 +159,23 @@ const OrderPage = (props) => {
     submitLoading,
     normalPostage,
     babyFormulaPostage,
+    adultFormula3Postage,
+    adultFormula6Postage,
+    otherItemPostage,
     exchangeRateInSetting,
     initializeSettings,
     showSidebar,
     showExistMessage,
+    modifyOriginalOrder,
+    getReceivers,
+    receivers,
+    setReceiverBySelection,
   } = props;
 
   const userRole = localStorage.getItem("role");
 
-
   const [searchInput, setSearchInput] = useState("");
+  const [tableEditabled, setTableEditable] = useState(true);
 
   // get settings
   useEffect(() => initializeSettings(), []);
@@ -183,20 +202,114 @@ const OrderPage = (props) => {
       title: "Receiver Information",
       children: [
         {
-          title: "Receiver",
+          title: (
+            <>
+              <p>Receiver</p>
+              {tableEditabled ? (
+                <Select
+                  showSearch
+                  placeholder="Select a receiver"
+                  bordered={true}
+                  onFocus={() => getReceivers(receivers)}
+                  onChange={(value) => {
+                    setReceiverBySelection(value, receivers);
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  {receivers !== null
+                    ? receivers.map((receiver) => {
+                        return (
+                          <Option
+                            key={receiver.get("id")}
+                            value={
+                              receiver.get("id") + "/" + receiver.get("name")
+                            }
+                          >
+                            {receiver.get("name") +
+                              " " +
+                              receiver.get("address")}
+                          </Option>
+                        );
+                      })
+                    : ""}
+                </Select>
+              ) : (
+                ""
+              )}
+            </>
+          ),
           dataIndex: "receiver",
           key: "receiver",
+          render: (text) => {
+            return tableEditabled ? (
+              <>
+                <Input
+                  type="text"
+                  size="small"
+                  bordered={false}
+                  value={text}
+                  onChange={(e) =>
+                    modifyOriginalOrder(
+                      "receiver_name",
+                      e.target.value,
+                      originalOrder
+                    )
+                  }
+                />
+              </>
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
         {
           title: "Phone",
           dataIndex: "phone",
           key: "phone",
-          render: (text) => "+86 " + text,
+          render: (text) => {
+            return tableEditabled ? (
+              <Input
+                type="number"
+                size="small"
+                bordered={false}
+                value={text}
+                prefix="+86 "
+                onChange={(e) =>
+                  modifyOriginalOrder(
+                    "receiver_phone",
+                    e.target.value,
+                    originalOrder
+                  )
+                }
+              />
+            ) : (
+              <span>+86 {text}</span>
+            );
+          },
         },
         {
           title: "Address",
           dataIndex: "address",
           key: "address",
+          render: (text) => {
+            return tableEditabled ? (
+              <Input
+                type="text"
+                size="small"
+                bordered={false}
+                value={text}
+                onChange={(e) =>
+                  modifyOriginalOrder(
+                    "receiver_address",
+                    e.target.value,
+                    originalOrder
+                  )
+                }
+              />
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
       ],
     },
@@ -222,13 +335,59 @@ const OrderPage = (props) => {
       case "奶粉":
         setPostage(babyFormulaPostage);
         break;
-      default:
+      case "蓝胖子3":
+        setPostage(adultFormula3Postage);
         break;
+      case "蓝胖子6":
+        setPostage(adultFormula6Postage);
+        break;
+      case "其他":
+        setPostage(
+          Number(
+            (
+              (originalOrder.get("package_weight") <= 1
+                ? 1
+                : Number(originalOrder.get("package_weight")).toFixed(2)) *
+              otherItemPostage
+            ).toFixed(2)
+          )
+        );
+        break;
+    }
+  };
+
+  const setAdultFormulaWeight = (originalOrder) => {
+    if (
+      originalOrder.get("item_type") === "蓝胖子3" &&
+      originalOrder.get("package_weight") !== 4.05
+    ) {
+      modifyOriginalOrder("package_weight", 4.05, originalOrder);
+    } else if (
+      originalOrder.get("item_type") === "蓝胖子6" &&
+      originalOrder.get("package_weight") !== 7.8
+    ) {
+      modifyOriginalOrder("package_weight", 7.8, originalOrder);
+    }
+  };
+
+  const setAdultFormulaCount = (originalOrder) => {
+    if (
+      originalOrder.get("item_type") === "蓝胖子3" &&
+      originalOrder.get("item_count") !== 3
+    ) {
+      modifyOriginalOrder("item_count", 3, originalOrder);
+    } else if (
+      originalOrder.get("item_type") === "蓝胖子6" &&
+      originalOrder.get("item_count") !== 6
+    ) {
+      modifyOriginalOrder("item_count", 6, originalOrder);
     }
   };
 
   useEffect(() => {
     calculatePostage(originalOrder.get("item_type"));
+    setAdultFormulaWeight(originalOrder);
+    setAdultFormulaCount(originalOrder);
   }, [originalOrder]);
 
   const packageData = [
@@ -249,34 +408,120 @@ const OrderPage = (props) => {
   const packageColumns = [
     {
       title: "Package Information",
-
       children: [
         {
           title: "ID",
           dataIndex: "pk_id",
           key: "pk_id",
+          render: (text) => {
+            return tableEditabled ? (
+              <Input
+                type="text"
+                size="small"
+                bordered={false}
+                value={text}
+                onChange={(e) =>
+                  modifyOriginalOrder(
+                    "package_id",
+                    e.target.value,
+                    originalOrder
+                  )
+                }
+              />
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
         {
           title: "Send time (ACST)",
           dataIndex: "sendTimeACST",
           key: "sendTimeACST",
+          render: (text) => {
+            return tableEditabled ? (
+              <DatePicker
+                format={"DD/MM/YYYY HH:mm:ss"}
+                size="small"
+                bordered={false}
+                onChange={(value) =>
+                  modifyOriginalOrder("sendTimeISO", value, originalOrder)
+                }
+              />
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
         {
           title: "Type",
           dataIndex: "type",
           key: "type",
           width: "15%",
+          render: (text) => {
+            return tableEditabled ? (
+              <Select
+                showSearch
+                placeholder="Select a type"
+                bordered={false}
+                size="small"
+                onChange={(value) =>
+                  modifyOriginalOrder("item_type", value, originalOrder)
+                }
+              >
+                <Option value="蓝胖子3">蓝胖子3</Option>
+                <Option value="蓝胖子6">蓝胖子6</Option>
+                <Option value="其他">其他</Option>
+              </Select>
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
         {
-          title: "Weight",
+          title: "Weight (Kg)",
           dataIndex: "weight",
           key: "weight",
-          render: (text) => text + " Kg",
+          render: (text) => {
+            return tableEditabled ? (
+              <Input
+                type="number"
+                size="small"
+                bordered={false}
+                value={text}
+                onChange={(e) =>
+                  modifyOriginalOrder(
+                    "package_weight",
+                    Number(e.target.value),
+                    originalOrder
+                  )
+                }
+              />
+            ) : (
+              <span>{text}</span>
+            );
+          },
         },
         {
           title: "Count",
           dataIndex: "count",
           key: "count",
+          render: (text) => {
+            return (
+              <Input
+                type="number"
+                size="small"
+                bordered={false}
+                value={text}
+                onChange={(e) =>
+                  modifyOriginalOrder(
+                    "item_count",
+                    Number(e.target.value),
+                    originalOrder
+                  )
+                }
+              />
+            );
+          },
         },
         {
           title: "Exchange rate",
@@ -284,21 +529,9 @@ const OrderPage = (props) => {
           key: "exchangeRate",
         },
         {
-          title: "Postage",
+          title: "Postage (AU$)",
           dataIndex: "postage",
           key: "postage",
-          render: (text) => {
-            return (
-              <Input
-                type="number"
-                size="small"
-                prefix="$"
-                bordered={false}
-                value={text}
-                onChange={(e) => setPostage(Number(e.target.value))}
-              />
-            );
-          },
         },
       ],
     },
@@ -680,16 +913,26 @@ const OrderPage = (props) => {
               style={{ width: "50%" }}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              onPressEnter={() =>
-                handleSearch(searchInput)
-              }
+              onPressEnter={() => {
+                handleSearch(searchInput);
+                setTableEditable(false);
+              }}
               allowClear
             />
             <StyledButton
-              onClick={() => handleSearch(searchInput)}
+              onClick={() => {
+                handleSearch(searchInput);
+                setTableEditable(false);
+              }}
               loading={spinning}
             >
-              Search
+              Search & Fill
+            </StyledButton>
+            <StyledButton
+              onClick={() => setTableEditable(true)}
+              loading={spinning}
+            >
+              Manual input
             </StyledButton>
           </SearchContainer>
 
@@ -843,7 +1086,10 @@ const OrderPage = (props) => {
         okText="Place a new order"
         cancelText="Close"
         style={{ top: "20px" }}
-        onOk={()=>{handleOnOk();setSearchInput("")}}
+        onOk={() => {
+          handleOnOk();
+          setSearchInput("");
+        }}
         onCancel={() => setShowSubmitResultDialog(false)}
       >
         <p>{submitResult.get("msg")}</p>
@@ -864,9 +1110,13 @@ const mapState = (state) => ({
   submitResult: state.getIn(["order", "submitResult"]),
   normalPostage: state.getIn(["order", "normalPostage"]),
   babyFormulaPostage: state.getIn(["order", "babyFormulaPostage"]),
+  adultFormula3Postage: state.getIn(["order", "adultFormula3Postage"]),
+  adultFormula6Postage: state.getIn(["order", "adultFormula6Postage"]),
+  otherItemPostage: state.getIn(["order", "otherItemPostage"]),
   exchangeRateInSetting: state.getIn(["order", "exchangeRateInSetting"]),
   showSidebar: state.getIn(["static", "showSidebar"]),
   showExistMessage: state.getIn(["order", "showExistMessage"]),
+  receivers: state.getIn(["order", "receivers"]),
 });
 
 const mapDispatch = (dispatch) => ({
@@ -916,6 +1166,27 @@ const mapDispatch = (dispatch) => ({
 
   initializeSettings() {
     dispatch(actionCreators.initializeSettingsAction);
+  },
+
+  modifyOriginalOrder(key, value, originalOrder) {
+    dispatch(
+      actionCreators.modifyOriginalOrderAction(key, value, originalOrder)
+    );
+  },
+
+  setReceiverBySelection(receiverIdNameString, receivers) {
+    dispatch(
+      actionCreators.setReceiverBySelectionAction(
+        receiverIdNameString,
+        receivers
+      )
+    );
+  },
+
+  getReceivers(receivers) {
+    if (receivers == null) {
+      dispatch(actionCreators.getReceiversAction);
+    }
   },
 });
 

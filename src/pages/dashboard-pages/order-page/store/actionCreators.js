@@ -38,7 +38,7 @@ export const searchAction = (pk_id) => {
           });
         }
         const { result } = response.data;
-        result.sendTimeACST = getTimeInZone(result.sendTimeISO,'ACST');
+        result.sendTimeACST = getTimeInZone(result.sendTimeISO, "ACST");
         dispatch({
           type: actionTypes.INITIAL_ORDER,
           value: fromJS(result),
@@ -205,11 +205,73 @@ export const initializeSettingsAction = async (dispatch) => {
         case "babyFormulaPostage":
           setting.babyFormulaPostage = item.value;
           break;
+        case "adultFormula3Postage":
+          setting.adultFormula3Postage = item.value;
+          break;
+        case "adultFormula6Postage":
+          setting.adultFormula6Postage = item.value;
+          break;
+        case "otherItemPostage":
+          setting.otherItemPostage = item.value;
+          break;
         case "exchangeRateInSetting":
           setting.exchangeRateInSetting = item.value;
           break;
       }
-    });
+    });    
     dispatch({ type: actionTypes.INITIAL_SETTINGS, value: fromJS(setting) });
   });
+};
+
+export const modifyOriginalOrderAction = (key, value, originalOrder) => {
+  return (dispatch) => {
+    const newData = originalOrder.toJS();
+    if (key == "sendTimeISO") {
+      newData.sendTimeISO = value;
+    } else {
+      newData[key] = value;
+    }
+    dispatch({
+      type: actionTypes.MODIFY_ORIGINAL_ORDER,
+      value: fromJS(newData),
+    });
+  };
+};
+
+export const getReceiversAction = (dispatch) => {
+  generalHandle(async () => {
+    const response = await authAxios.get("/api/address/all_address");
+    const { result } = response.data;
+    const receivers = [];
+    result.forEach((receiver) => {
+      const address =
+        receiver.province +
+        receiver.city +
+        receiver.district +
+        receiver.address;
+      const id = receiver._id;
+      const name = receiver.name;
+      const phone = receiver.phone;
+      receivers.push({ id, name, phone, address });
+    });
+
+    dispatch({ type: actionTypes.GET_RECEIVERS, value: fromJS(receivers) });
+  });
+};
+
+export const setReceiverBySelectionAction = (
+  receiverIdNameString,
+  receivers
+) => {
+  return (dispatch) => {
+    const receiver_id = receiverIdNameString.split("/")[0];
+    const receiver = receivers
+      .toJS()
+      .find((receiver) => receiver.id == receiver_id);
+
+    dispatch({
+      type: actionTypes.SET_RECEIVER_BY_SELECTION,
+      value: fromJS(receiver),
+    });
+  };
 };
